@@ -18,8 +18,6 @@ This repository contains a simple Azure CLI script designed to start a predefine
 Before running this script, ensure you have the following:
 
   * **Azure CLI:** Installed on your local machine. If you don't have it, you can find installation instructions [here](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).
-  * **Bash 4.0+:** This script utilizes Bash features (like associative arrays) that require Bash version 4.0 or newer. You can check your Bash version with `bash --version`.
-      * On macOS, the default system Bash might be older. You can install a newer version using Homebrew: `brew install bash`.
   * **Azure Account:** An active Azure subscription with permissions to start the target VMs.
   * **Logged into Azure:** You must be logged into your Azure account via the Azure CLI. Open your terminal and run:
     ```bash
@@ -151,44 +149,3 @@ Execute the script from your terminal:
 ```
 
 The script will then attempt to start each VM defined in your `vm_config.sh` file and provide status updates.
-
------
-
-## Troubleshooting
-
-### `declare: -A: invalid option` Error or Script Not Using Updated Bash
-
-If you've updated your Bash version (e.g., to Bash 4.0+ using Homebrew on macOS) but are still encountering errors like `declare: -A: invalid option`, it means your script is likely still being executed by an older version of Bash.
-
-This often happens because your system's default `bash` or your shell's `PATH` might be pointing to an older installation, even if a newer version is present.
-
-**Solution:** Explicitly tell your script to use the newer Bash by updating its "shebang" line.
-
-1.  **Identify the path to your new Bash:**
-    Open your terminal and run:
-
-    ```bash
-    which -a bash
-    ```
-
-    Look for the path that corresponds to your newly installed Bash (e.g., `/opt/homebrew/bin/bash` on macOS with Homebrew).
-
-2.  **Update the Shebang in Your Scripts:**
-    Edit both `start_vms.sh` and `vm_config.sh`. Change the very first line (`#!/bin/bash`) in both files to point directly to the path of your new Bash executable.
-
-    For example, if your new Bash is at `/opt/homebrew/bin/bash`, change the first line in both files to:
-
-    ```bash
-    #!/opt/homebrew/bin/bash
-    ```
-
-    Save both files after making this change.
-
-3.  **Rerun the Script:**
-    Try running the script again:
-
-    ```bash
-    ./start_vms.sh
-    ```
-
-    This should now execute the script using your updated Bash version, resolving the `declare -A` error.
