@@ -75,66 +75,7 @@ You'll use the provided example to create your personal configuration file.
 
     **Customize the `vms_to_start` array** with your actual Azure VM names and the names of the resource groups they reside in.
 
-### 3\. Create the Main Script
-
-Create a file named `start_vms.sh` in the same directory. This is the executable script that will read your configuration and start the VMs.
-
-**`start_vms.sh`**
-
-```bash
-#!/bin/bash
-
-# Source the configuration file.
-# This file contains the declaration of 'vms_to_start' associative array.
-# Ensure vm_config.sh is in the same directory or provide the correct path.
-CONFIG_FILE="vm_config.sh"
-
-if [ -f "$CONFIG_FILE" ]; then
-    source "$CONFIG_FILE"
-else
-    echo "Error: Configuration file '$CONFIG_FILE' not found!"
-    echo "Please create '$CONFIG_FILE' by copying and customizing 'vm_config.sh.example'."
-    exit 1
-fi
-
-# Check if the associative array is populated after sourcing
-if [ ${#vms_to_start[@]} -eq 0 ]; then
-    echo "Error: No VMs defined in '$CONFIG_FILE'."
-    echo "Please ensure the 'vms_to_start' array is correctly populated in '$CONFIG_FILE'."
-    exit 1
-fi
-
-echo "Starting Azure Virtual Machines..."
-
-# Loop through the associative array and start each VM
-for vm_name in "${!vms_to_start[@]}"; do
-    resource_group="${vms_to_start[$vm_name]}"
-    echo "Attempting to start VM: '$vm_name' in Resource Group: '$resource_group'..."
-
-    az vm start --name "$vm_name" --resource-group "$resource_group"
-
-    if [ $? -eq 0 ]; then
-        echo "Successfully sent start command for VM: '$vm_name'."
-    else
-        echo "Failed to send start command for VM: '$vm_name'. Please check the VM name, resource group, and your Azure permissions."
-    fi
-    echo "" # Add a blank line for readability
-done
-
-echo "Script execution complete."
-```
-
-### 4\. Update `.gitignore`
-
-If you are using Git, create or open your `.gitignore` file (in the root of your repository or in the same directory as your scripts) and add the following line to prevent your *personal* VM configurations from being committed:
-
-**`.gitignore`**
-
-```
-vm_config.sh
-```
-
-### 5\. Make the Script Executable
+### 3\. Make the Script Executable
 
 Before running, you need to grant execute permissions to `start_vms.sh`. Open your terminal, navigate to the directory where you saved the script, and run:
 
@@ -142,7 +83,7 @@ Before running, you need to grant execute permissions to `start_vms.sh`. Open yo
 chmod +x start_vms.sh
 ```
 
-### 6\. Run the Script
+### 4\. Run the Script
 
 Execute the script from your terminal:
 
