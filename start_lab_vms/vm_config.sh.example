@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Define an associative array where keys are VM names and values are their Resource Group names.
+# IMPORTANT: Replace these with your actual VM names and Resource Group names.
+# This file should be added to your .gitignore to prevent committing sensitive information.
+
+declare -A vms_to_start
+vms_to_start=(
+    ["myVM1"]="myResourceGroup1"
+    ["myVM2"]="myResourceGroup2"
+    ["anotherVM"]="myResourceGroup1" # Example of multiple VMs in the same RG
+)
+
+# You can add more configurations here if needed in the future
+# For example:
+# AZURE_LOCATION="westus2"
